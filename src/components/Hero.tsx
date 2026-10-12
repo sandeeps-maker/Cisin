@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Sparkles, Send, X, PenLine } from "lucide-react";
 import { TenityRibbedBackground } from "./TenityRibbedBackground";
@@ -9,6 +10,20 @@ interface HeroProps {
   onOpenConsultation: (track?: "startup" | "enterprise") => void;
   onOpenChatWithQuery?: (query: string) => void;
 }
+
+const CLIENT_LOGOS = [
+  { name: "Claude Partner Network", src: "/logos/logo-claude-partner-gray.png", width: 240, height: 70 },
+  { name: "Microsoft Gold Certified Partner", src: "/accreditations/ms-gold-clean-gray.png", width: 250, height: 70 },
+  { name: "eBay", src: "/logos/logo-ebay-gray.png", width: 170, height: 65 },
+  { name: "Amcor", src: "/logos/logo-amcor-gray.png", width: 185, height: 65 },
+  { name: "BCG", src: "/logos/logo-bcg-gray.png", width: 170, height: 65 },
+  { name: "Careem", src: "/logos/logo-careem-gray.png", width: 190, height: 65 },
+  { name: "Crunchbase", src: "/logos/logo-crunchbase-gray.png", width: 205, height: 65 },
+  { name: "Nokia", src: "/logos/logo-nokia-gray.png", width: 180, height: 65 },
+  { name: "World Vision", src: "/logos/logo-worldvision-gray.png", width: 195, height: 65 },
+  { name: "CMMI Level 5", src: "/accreditations/cmmi-gray.png", width: 195, height: 65 },
+  { name: "ISO 27001", src: "/accreditations/iso-27001-gray.png", width: 195, height: 65 },
+];
 
 const TARGET_AUDIENCES = [
   "the Enterprise",
@@ -20,22 +35,7 @@ const TARGET_AUDIENCES = [
   "Industry Leaders",
 ];
 
-const SAMPLE_PROMPTS = [
-  "What can CIS solve for you?",
-  "How to modernize our core platform with AI?",
-  "Build autonomous AI agents for operations",
-  "Launch a venture-scale AI MVP in 8 weeks",
-  "Scale dedicated AI engineering teams (1000+ ninjas)",
-  "Calculate ROI for enterprise AI automation",
-];
 
-const QUICK_PILLS = [
-  { label: "⚡ AI Agent Orchestration", query: "How can we build and scale autonomous AI agents for our business workflows?" },
-  { label: "🔄 Legacy Modernization", query: "How does CIS modernize monolithic legacy systems using AI platforms?" },
-  { label: "🚀 Startup 0 → 1 MVP", query: "How fast can CIS design and launch a production-ready AI MVP?" },
-  { label: "🛡️ Enterprise AI Security", query: "What are CIS enterprise security, ISO & CMMI Level 5 standards?" },
-  { label: "☁️ Cloud & DevOps Scale", query: "How do we migrate to multi-cloud infrastructure with automated AI pipelines?" },
-];
 
 export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
   // 1. Smooth Pen-Writing Target Animator (Zero Layout Shifts)
@@ -74,40 +74,12 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
     return () => clearTimeout(timer);
   }, [writtenTarget, isTargetDeleting, targetIdx]);
 
-  // 2. Typewriter for Prompt Input Bar
-  const [promptIdx, setPromptIdx] = useState(0);
-  const [displayedText, setDisplayedText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
+  // 2. Fixed Search Prompt: "What can CIS solve for you?"
+  const STATIC_PROMPT = "What can CIS solve for you?";
   const [userQuery, setUserQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (userQuery) return;
-    const currentFullText = SAMPLE_PROMPTS[promptIdx];
-    const typingSpeed = isDeleting ? 30 : 60;
-    const pauseDuration = isDeleting ? 500 : 2200;
-
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        if (displayedText.length < currentFullText.length) {
-          setDisplayedText(currentFullText.slice(0, displayedText.length + 1));
-        } else {
-          setTimeout(() => setIsDeleting(true), pauseDuration);
-        }
-      } else {
-        if (displayedText.length > 0) {
-          setDisplayedText(currentFullText.slice(0, displayedText.length - 1));
-        } else {
-          setIsDeleting(false);
-          setPromptIdx((prev) => (prev + 1) % SAMPLE_PROMPTS.length);
-        }
-      }
-    }, typingSpeed);
-
-    return () => clearTimeout(timer);
-  }, [displayedText, isDeleting, promptIdx, userQuery]);
 
   const handleSearch = (queryToSearch: string) => {
     const q = queryToSearch.trim();
@@ -130,15 +102,11 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
     e.preventDefault();
     if (userQuery) {
       handleSearch(userQuery);
-    } else if (displayedText) {
-      handleSearch(displayedText);
+    } else {
+      handleSearch(STATIC_PROMPT);
     }
   };
 
-  const handlePillClick = (query: string) => {
-    setUserQuery(query);
-    handleSearch(query);
-  };
 
   const handleClear = () => {
     setUserQuery("");
@@ -148,14 +116,15 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
   };
 
   return (
-    <section className="relative min-h-screen w-full flex flex-col justify-center items-center pt-32 pb-24 sm:pt-36 sm:pb-28 overflow-hidden bg-[#0b0c0f] text-white select-none">
+    <section className="relative min-h-screen w-full flex flex-col justify-between items-center pt-28 sm:pt-32 pb-0 overflow-hidden bg-[#0b0c0f] text-white select-none">
       {/* Exact Graphic Image with Cursor Movement Animation */}
       <TenityRibbedBackground side="right" opacity={1.0} imageSrc="/tenity-ribbed-bg.png" />
 
       {/* Subtle Edge Gradient for smooth section transition */}
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0c0d10] to-transparent pointer-events-none z-[2]" />
 
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center relative z-10 space-y-7 sm:space-y-9">
+      {/* Main Content Area */}
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center relative z-10 space-y-7 sm:space-y-9 my-auto pt-6">
         {/* Main Centered Headline */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -219,7 +188,7 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
               <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 fill-[#e52e2e]" />
             </div>
 
-            {/* Input with Typewriter / Custom Prompt */}
+            {/* Input with Static Prompt Placeholder: What can CIS solve for you? */}
             <div className="relative flex-1 flex items-center overflow-hidden">
               <input
                 ref={inputRef}
@@ -228,21 +197,10 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
                 onChange={(e) => setUserQuery(e.target.value)}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                placeholder=""
-                className="w-full bg-transparent text-sm sm:text-base md:text-lg font-normal text-neutral-900 outline-none placeholder:text-neutral-400 tracking-tight"
+                placeholder="What can CIS solve for you?"
+                className="w-full bg-transparent text-sm sm:text-base md:text-lg font-normal text-neutral-900 outline-none placeholder:text-neutral-500 tracking-tight"
                 aria-label="Ask CIS AI about your engineering needs"
               />
-
-              {/* Animated Typewriter Placeholder */}
-              {!userQuery && (
-                <div
-                  onClick={() => inputRef.current?.focus()}
-                  className="absolute inset-0 flex items-center pointer-events-none text-neutral-600 text-sm sm:text-base md:text-lg font-normal tracking-tight"
-                >
-                  <span>{displayedText}</span>
-                  <span className="inline-block w-[1.5px] h-5 bg-[#0080ff] ml-0.5 animate-pulse" />
-                </div>
-              )}
             </div>
 
             {/* Clear Button (if user entered text) */}
@@ -272,6 +230,33 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
             </button>
           </form>
         </motion.div>
+      </div>
+
+      {/* ── Client Logos Clean Transparent Strip (Planted at Exact Bottom Highlighted Area, Enlarged, Slow Left-to-Right Marquee) ── */}
+      <div className="w-full relative z-10 pt-4 pb-6 sm:pb-8 mt-auto">
+        {/* Soft edge fade masks on sides */}
+        <div className="absolute left-0 inset-y-0 w-28 sm:w-44 bg-gradient-to-r from-[#0b0c0f] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 inset-y-0 w-28 sm:w-44 bg-gradient-to-l from-[#0b0c0f] to-transparent z-10 pointer-events-none" />
+
+        <div className="w-full overflow-hidden flex items-center">
+          {/* Left-to-right slow marquee track */}
+          <div className="flex items-center gap-16 sm:gap-24 shrink-0 animate-marquee-ltr-slower">
+            {[...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, idx) => (
+              <div
+                key={`${logo.name}-${idx}`}
+                className="flex items-center justify-center shrink-0 opacity-80 hover:opacity-100 transition-opacity duration-300"
+              >
+                <Image
+                  src={logo.src}
+                  alt={logo.name}
+                  width={logo.width}
+                  height={logo.height}
+                  className="max-h-12 sm:max-h-14 md:max-h-16 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

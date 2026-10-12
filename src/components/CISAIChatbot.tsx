@@ -320,7 +320,7 @@ export function CISAIChatbot({
                 <div className="flex items-center gap-1.5 pl-1 border-l border-neutral-200">
                   <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[#f15a24]/40 ring-1 ring-emerald-500/40">
                     <Image
-                      src="/cis-advisor-human.png"
+                      src="/cis-advisor-call.png"
                       alt="CIS AI Sales Advisor"
                       fill
                       className="object-cover object-top"

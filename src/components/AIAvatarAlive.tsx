@@ -26,14 +26,15 @@ export default function AIAvatarAlive({ className = "", showBadge = true }: AIAv
         }}
         className="relative w-full h-full"
       >
-        {/* Photorealistic CIS Client Solutions Advisor on Call with Headset in CIS Infrastructure Lobby */}
+        {/* Animated Speaking Girl Advisor on Call with Client (GIF) */}
         <Image
-          src="/cis-advisor-call.png"
-          alt="CIS Client Solutions Advisor on Call"
+          src="/cis-advisor-call.gif"
+          alt="CIS Client Advisor on Call"
           fill
+          unoptimized
           priority
           sizes="(max-width: 768px) 210px, 240px"
-          className="object-cover object-top brightness-[1.03] contrast-[1.04]"
+          className="object-cover object-[48%_35%] brightness-[1.02] contrast-[1.02]"
         />
       </motion.div>
 

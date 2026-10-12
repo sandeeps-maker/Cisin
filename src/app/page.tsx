@@ -1,69 +1,129 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Navbar } from "@/components/Navbar";
+import { Hero } from "@/components/Hero";
+import { StylistCredibilitySection } from "@/components/StylistCredibilitySection";
+import { PartnersSection } from "@/components/PartnersSection";
+import { WhiteServicesSection } from "@/components/WhiteServicesSection";
+import { ClientTestimonialsSection } from "@/components/ClientTestimonialsSection";
+import { StartupJourney } from "@/components/StartupJourney";
+import { WhiteCaseStudiesSection } from "@/components/WhiteCaseStudiesSection";
+import { EnterpriseSection } from "@/components/EnterpriseSection";
+import { TransformCTASection } from "@/components/TransformCTASection";
+import { OrbitFooter } from "@/components/OrbitFooter";
+import { ConsultationModal } from "@/components/ConsultationModal";
+import { DirectoryMegaMenu } from "@/components/DirectoryMegaMenu";
+import { CISAIChatbot } from "@/components/CISAIChatbot";
 
 export default function Home() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTrack, setModalTrack] = useState<"startup" | "enterprise" | "general">("general");
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatInitialQuery, setChatInitialQuery] = useState("");
+
+  const handleOpenConsultation = (track: "startup" | "enterprise" | "general" = "general") => {
+    setModalTrack(track);
+    setModalOpen(true);
+  };
+
+  const handleOpenChatWithQuery = (query: string) => {
+    setChatInitialQuery(query);
+    setChatOpen(true);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+    <main className="min-h-screen bg-[#0c0d10] text-slate-100 relative selection:bg-[#f15a24] selection:text-white">
+      {/* 01 Full-Width Top Header Bar + Clean Navbar with Mega Menu Toggle */}
+      <Navbar
+        onOpenConsultation={handleOpenConsultation}
+        onToggleMegaMenu={() => setMegaMenuOpen(true)}
+      />
+
+      {/* 02 First Fold Hero */}
+      <Hero
+        onOpenConsultation={handleOpenConsultation}
+        onOpenChatWithQuery={handleOpenChatWithQuery}
+      />
+
+      {/* 03 Second Slide: Stylist Credibility & Verified Scale Metrics */}
+      <StylistCredibilitySection />
+
+      {/* 04 Global Strategic Partners & Cloud Alliances */}
+      <PartnersSection onOpenConsultation={() => handleOpenConsultation("general")} />
+
+      {/* 06 Middle White Section 1: Innovation Practices & Services */}
+      <WhiteServicesSection onOpenConsultation={() => handleOpenConsultation("general")} />
+
+      {/* 07 Client Video Testimonials ("Secure, Streamline, and Succeed with Confidence") */}
+      <ClientTestimonialsSection onOpenConsultation={() => handleOpenConsultation("general")} />
+
+      {/* 08 Industry Verticals & Global Client Case Studies ("You bring the vision. We bring the technology.") */}
+      <StartupJourney onOpenConsultation={() => handleOpenConsultation("startup")} />
+
+      {/* 08 Middle White Section 2: Custom Software Development Services Slider */}
+      <WhiteCaseStudiesSection onOpenConsultation={() => handleOpenConsultation("general")} />
+
+      {/* 09 Enterprise Complexity & CMMI Level 5 Scale (Dark) */}
+      <EnterpriseSection onOpenConsultation={() => handleOpenConsultation("enterprise")} />
+
+      {/* 10 Transform IT Infrastructure Call-to-Action Section */}
+      <TransformCTASection onOpenConsultation={() => handleOpenConsultation("general")} />
+
+      {/* 11 Tenity-Style Orbit Footer (Image 3: "Stay in our orbit" + Newsletter + Hubs) */}
+      <OrbitFooter onOpenConsultation={handleOpenConsultation} />
+
+      {/* Full-Screen Directory Mega Menu Drawer (Slides in from the right side) */}
+      <AnimatePresence>
+        {megaMenuOpen && (
+          <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
+            {/* Smooth Dimming Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setMegaMenuOpen(false)}
+              className="fixed inset-0 bg-neutral-950/70 backdrop-blur-sm transition-all"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+            {/* Right Sliding Mega Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="relative z-10 w-full max-w-7xl h-full overflow-hidden bg-white shadow-2xl flex flex-col no-scrollbar"
+            >
+              <DirectoryMegaMenu
+                onClose={() => setMegaMenuOpen(false)}
+                onOpenConsultation={() => {
+                  setMegaMenuOpen(false);
+                  handleOpenConsultation("general");
+                }}
+              />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Interactive Project Scope & Consultation Modal */}
+      <ConsultationModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        defaultTrack={modalTrack === "general" ? "startup" : modalTrack}
+      />
+
+      {/* 24/7 Live CIS AI Architecture Chatbot */}
+      <CISAIChatbot
+        isOpen={chatOpen}
+        onClose={() => setChatOpen(false)}
+        onOpen={() => setChatOpen(true)}
+        initialQuery={chatInitialQuery}
+        onOpenConsultation={handleOpenConsultation}
+      />
+    </main>
   );
 }

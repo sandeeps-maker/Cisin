@@ -1,0 +1,367 @@
+"use client";
+
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, X, ExternalLink, Video } from "lucide-react";
+import Image from "next/image";
+
+export interface VideoItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  thumbnail: string;
+  youtubeQuery: string;
+  channel: string;
+  tag: string;
+}
+
+const VIDEOS: VideoItem[] = [
+  {
+    id: "office-indore",
+    title: "CIS New Office Indore",
+    subtitle: "One Of The Big IT Companies In Central India: 12+ Years",
+    thumbnail: "/videos/video-office.png",
+    youtubeQuery: "Cyber Infrastructure CIS New Office Indore",
+    channel: "Cyber Infrastructure",
+    tag: "Campus & Tech Hub",
+  },
+  {
+    id: "ceo-speaks",
+    title: "CEO Speaks",
+    subtitle: "Interview Of Our Founder & CEO, Kuldeep Kundal",
+    thumbnail: "/videos/video-ceo.png",
+    youtubeQuery: "Cyber Infrastructure Kuldeep Kundal CEO Interview",
+    channel: "Cyber Infrastructure",
+    tag: "Leadership Vision",
+  },
+  {
+    id: "spark-2019",
+    title: "CIS Spark 2019",
+    subtitle: "CIS Spark 2019, A New Milestone In Employee Reorganization And Entertainment.",
+    thumbnail: "/videos/video-spark2019.png",
+    youtubeQuery: "Cyber Infrastructure CIS Spark 2019",
+    channel: "Cyber Infrastructure",
+    tag: "Annual Milestone",
+  },
+  {
+    id: "spark-2016",
+    title: "CIS Spark 2016",
+    subtitle: "CIS Spark 2016, A New Milestone In Employee Reorganization And Entertainment.",
+    thumbnail: "/videos/video-spark2016.png",
+    youtubeQuery: "Cyber Infrastructure CIS Spark 2016",
+    channel: "Cyber Infrastructure",
+    tag: "Annual Celebration",
+  },
+  {
+    id: "cfo-speaks",
+    title: "CFO Speaks",
+    subtitle: "Interview Of Our Founder & CFO, Abhishek Pareek",
+    thumbnail: "/videos/video-cfo.png",
+    youtubeQuery: "Cyber Infrastructure Abhishek Pareek CFO Interview",
+    channel: "Cyber Infrastructure",
+    tag: "Financial & Strategy",
+  },
+  {
+    id: "coo-speaks",
+    title: "COO Speaks",
+    subtitle: "Interview Of Our Founder & COO, Amit Agrawal",
+    thumbnail: "/videos/video-coo.png",
+    youtubeQuery: "Cyber Infrastructure Amit Agrawal COO Interview",
+    channel: "Cyber Infrastructure",
+    tag: "Operations & Delivery",
+  },
+];
+
+interface EnterpriseSectionProps {
+  onOpenConsultation?: () => void;
+}
+
+export function EnterpriseSection({ onOpenConsultation }: EnterpriseSectionProps) {
+  // Default to index 2 (CIS Spark 2019) so one card is active from the very first view
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(2);
+  const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Mouse move handler for Quoti-style fanned interactive response
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(1, mouseX / rect.width));
+    const cardIdx = Math.min(VIDEOS.length - 1, Math.floor(percentage * VIDEOS.length));
+    setHoveredIdx(cardIdx);
+  };
+
+  const handleMouseLeave = () => {
+    // Keep the prominent center card active when not hovering
+    setHoveredIdx(2);
+  };
+
+  return (
+    <section
+      id="enterprise"
+      className="relative py-20 sm:py-28 bg-[#080b12] text-white overflow-hidden border-t border-white/10 select-none"
+    >
+      {/* Animated Floating Orange Ambient Glow Circles */}
+      <motion.div
+        animate={{
+          x: [0, 35, -20, 0],
+          y: [0, -25, 20, 0],
+          scale: [1, 1.12, 0.95, 1],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute top-1/4 left-1/3 w-[650px] h-[450px] bg-gradient-to-tr from-[#f15a24]/20 via-[#fb923c]/18 to-[#ea580c]/12 blur-[170px] rounded-full pointer-events-none"
+      />
+
+      <motion.div
+        animate={{
+          x: [0, -30, 25, 0],
+          y: [0, 20, -25, 0],
+          scale: [1, 1.18, 1],
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
+        className="absolute bottom-1/4 right-1/4 w-[550px] h-[400px] bg-gradient-to-bl from-[#f97316]/18 via-[#f15a24]/14 to-transparent blur-[160px] rounded-full pointer-events-none"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Clean Section Header (culture Highlights & We Believe in Work hard, Party harder!) */}
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-0.035em] capitalize font-sans"
+          >
+            Culture Highlights
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.08 }}
+            className="text-base sm:text-lg text-slate-300 font-normal mt-3 font-sans"
+          >
+            We Believe in Work hard, Party harder!
+          </motion.p>
+        </div>
+
+        {/* Quoti-Style Interactive Fanned Cards Experience */}
+        <div className="py-6 relative">
+          <div
+            ref={containerRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="relative min-h-[480px] sm:min-h-[540px] flex items-center justify-center cursor-pointer"
+          >
+            <div className="relative w-full max-w-5xl h-[420px] sm:h-[460px] flex items-center justify-center">
+              {VIDEOS.map((video, idx) => {
+                const centerIdx = 2.5; // virtual center of 6 items (between 2 and 3)
+                const distFromCenter = idx - centerIdx;
+                const isHovered = hoveredIdx === idx;
+                const isAnyHovered = hoveredIdx !== null;
+
+                // Dynamic resting arc calculations matching getquoti.ai
+                let rotate = distFromCenter * 5.5; // -13.75 to +13.75 deg
+                let translateY = Math.abs(distFromCenter) * 16; // arc curve drop
+                let translateX = distFromCenter * 140; // horizontal fanning
+                let scale = 0.96;
+                let zIndex = Math.round(10 - Math.abs(distFromCenter) * 2);
+
+                // Quoti-style active hover response
+                if (isHovered) {
+                  rotate = 0;
+                  translateY = -28;
+                  scale = 1.08;
+                  zIndex = 40;
+                } else if (isAnyHovered) {
+                  const relativeDist = idx - (hoveredIdx ?? 0);
+                  const pushFactor = relativeDist < 0 ? -1 : 1;
+                  translateX += pushFactor * 35;
+                  scale = 0.92;
+                  translateY += 10;
+                }
+
+                return (
+                  <motion.div
+                    key={video.id}
+                    animate={{
+                      x: translateX,
+                      y: translateY,
+                      rotate: rotate,
+                      scale: scale,
+                      zIndex: zIndex,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 24,
+                      mass: 0.8,
+                    }}
+                    onClick={() => setSelectedVideo(video)}
+                    className="absolute w-[280px] sm:w-[320px] bg-white rounded-3xl overflow-hidden shadow-2xl border border-neutral-200/90 text-neutral-900 group cursor-pointer transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(241,90,36,0.3)]"
+                    style={{ transformOrigin: "center bottom" }}
+                  >
+                    {/* Video Thumbnail with YouTube Overlay */}
+                    <div className="relative w-full aspect-[16/10] bg-neutral-900 overflow-hidden">
+                      <Image
+                        src={video.thumbnail}
+                        alt={video.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {/* Dark Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+
+                      {/* Top Channel Badge */}
+                      <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/20">
+                          {video.tag}
+                        </span>
+                      </div>
+
+                      {/* YouTube Center Play Button */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <motion.div
+                          whileHover={{ scale: 1.15 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="w-14 h-10 sm:w-16 sm:h-11 bg-[#ff0000] rounded-2xl flex items-center justify-center shadow-2xl shadow-red-600/50 group-hover:bg-[#cc0000] transition-colors"
+                        >
+                          <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Card Content Footer */}
+                    <div className="p-5 sm:p-6 bg-white flex flex-col justify-between min-h-[140px]">
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-black text-neutral-950 font-sans tracking-tight leading-snug group-hover:text-[#f15a24] transition-colors">
+                          {video.title}
+                        </h3>
+                        <p className="text-xs text-neutral-600 font-normal leading-relaxed mt-1.5 line-clamp-2">
+                          {video.subtitle}
+                        </p>
+                      </div>
+
+                      <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between text-[11px] font-mono text-neutral-500">
+                        <span className="text-[#f15a24] font-bold">Watch on YouTube</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#f15a24] transition-colors" />
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Interactive Deck Pill Indicator */}
+          <div className="text-center mt-6">
+            <span className="inline-flex items-center gap-2 text-xs font-mono text-neutral-400 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
+              <span className="w-2 h-2 rounded-full bg-[#f15a24] animate-pulse" />
+              Hover across the deck to fan out videos • Click any card to watch
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Video Lightbox Modal */}
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedVideo(null)}
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 28 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-4xl bg-[#12151d] rounded-3xl overflow-hidden border border-white/20 shadow-2xl relative flex flex-col"
+            >
+              {/* Modal Header */}
+              <div className="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between bg-black/40">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#f15a24]/20 flex items-center justify-center text-[#f15a24] border border-[#f15a24]/30">
+                    <Video className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      {selectedVideo.title}
+                    </h3>
+                    <p className="text-xs text-slate-400 font-mono">
+                      Cyber Infrastructure Official Media
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setSelectedVideo(null)}
+                  className="p-2 rounded-full bg-white/10 text-slate-300 hover:text-white hover:bg-white/20 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Video Player Embed / Thumbnail Showcase */}
+              <div className="relative aspect-video w-full bg-black flex items-center justify-center">
+                <Image
+                  src={selectedVideo.thumbnail}
+                  alt={selectedVideo.title}
+                  fill
+                  className="object-cover opacity-80"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30 flex flex-col items-center justify-center p-6 text-center">
+                  <a
+                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
+                      selectedVideo.youtubeQuery
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-[#ff0000] hover:bg-[#cc0000] text-white font-bold text-sm sm:text-base shadow-2xl shadow-red-600/50 hover:scale-105 transition-all duration-300"
+                  >
+                    <Play className="w-5 h-5 fill-white" />
+                    <span>Watch &quot;{selectedVideo.title}&quot; on YouTube</span>
+                    <ExternalLink className="w-4 h-4 ml-1" />
+                  </a>
+
+                  <p className="text-xs sm:text-sm text-slate-300 mt-4 max-w-md font-light">
+                    {selectedVideo.subtitle}
+                  </p>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-4 sm:p-5 bg-black/60 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-slate-400">
+                <span>Verified Cyber Infrastructure (CIS) Production</span>
+                {onOpenConsultation && (
+                  <button
+                    onClick={() => {
+                      setSelectedVideo(null);
+                      onOpenConsultation();
+                    }}
+                    className="text-[#f15a24] hover:underline font-semibold"
+                  >
+                    Book a Consultation with Our Leadership →
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}

@@ -12,17 +12,15 @@ interface HeroProps {
 }
 
 const CLIENT_LOGOS = [
-  { name: "Claude Partner Network", src: "/logos/logo-claude-partner-gray.png", width: 240, height: 70 },
-  { name: "Microsoft Gold Certified Partner", src: "/accreditations/ms-gold-clean-gray.png", width: 250, height: 70 },
-  { name: "eBay", src: "/logos/logo-ebay-gray.png", width: 170, height: 65 },
-  { name: "Amcor", src: "/logos/logo-amcor-gray.png", width: 185, height: 65 },
-  { name: "BCG", src: "/logos/logo-bcg-gray.png", width: 170, height: 65 },
-  { name: "Careem", src: "/logos/logo-careem-gray.png", width: 190, height: 65 },
-  { name: "Crunchbase", src: "/logos/logo-crunchbase-gray.png", width: 205, height: 65 },
-  { name: "Nokia", src: "/logos/logo-nokia-gray.png", width: 180, height: 65 },
-  { name: "World Vision", src: "/logos/logo-worldvision-gray.png", width: 195, height: 65 },
-  { name: "CMMI Level 5", src: "/accreditations/cmmi-gray.png", width: 195, height: 65 },
-  { name: "ISO 27001", src: "/accreditations/iso-27001-gray.png", width: 195, height: 65 },
+  { name: "Careem", src: "/logos/careem.svg", width: 190, height: 48 },
+  { name: "Crunchbase", src: "/logos/crunchbase.svg", width: 195, height: 48 },
+  { name: "Nokia", src: "/logos/nokia.svg", width: 175, height: 48 },
+  { name: "World Vision", src: "/logos/worldvision.svg", width: 185, height: 48 },
+  { name: "Bidvest", src: "/logos/logo-bidvest-hd.png", width: 180, height: 48 },
+  { name: "Spirit Airlines", src: "/logos/spirit.svg", width: 180, height: 48 },
+  { name: "eBay", src: "/logos/ebay.svg", width: 155, height: 48 },
+  { name: "Amcor", src: "/logos/amcor.svg", width: 175, height: 48 },
+  { name: "BCG", src: "/logos/bcg.svg", width: 160, height: 48 },
 ];
 
 const TARGET_AUDIENCES = [
@@ -179,13 +177,13 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
             onSubmit={handleFormSubmit}
             className={`relative flex items-center w-full min-h-[56px] sm:min-h-[62px] px-5 sm:px-6 rounded-full bg-white text-neutral-900 border-2 transition-all duration-300 ${
               isFocused
-                ? "border-[#0080ff] ring-4 ring-[#0080ff]/20 shadow-[0_12px_45px_rgba(0,128,255,0.25)]"
-                : "border-[#0080ff]/80 hover:border-[#0080ff] shadow-[0_10px_35px_rgba(0,0,0,0.35)]"
+                ? "border-[#f15a24] ring-4 ring-[#f15a24]/20 shadow-[0_12px_45px_rgba(241,90,36,0.25)]"
+                : "border-[#f15a24]/80 hover:border-[#f15a24] shadow-[0_10px_35px_rgba(0,0,0,0.35)]"
             }`}
           >
             {/* Left AI Sparkle Icon */}
-            <div className="flex items-center justify-center shrink-0 mr-3.5 text-[#e52e2e]">
-              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 fill-[#e52e2e]" />
+            <div className="flex items-center justify-center shrink-0 mr-3.5 text-[#f15a24]">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 fill-[#f15a24]" />
             </div>
 
             {/* Input with Static Prompt Placeholder: What can CIS solve for you? */}
@@ -219,7 +217,7 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-neutral-100 hover:bg-[#0080ff] text-neutral-700 hover:text-white transition-all duration-200 shrink-0 cursor-pointer shadow-sm active:scale-95 group"
+              className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f15a24] hover:bg-[#d94814] text-white transition-all duration-200 shrink-0 cursor-pointer shadow-md hover:shadow-lg active:scale-95 group"
               aria-label="Submit search"
             >
               {isLoading ? (
@@ -229,21 +227,69 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
               )}
             </button>
           </form>
+
+          {/* Quick Prompt Suggestions Below AI Search Tool */}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+            <button
+              type="button"
+              onClick={() => handleSearch("AI Agent Orchestration")}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-200 bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 hover:border-white/20 transition-all duration-200 backdrop-blur-md cursor-pointer active:scale-95"
+            >
+              <span>⚡</span>
+              <span>AI Agent Orchestration</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleSearch("Legacy Modernization")}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-200 bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 hover:border-white/20 transition-all duration-200 backdrop-blur-md cursor-pointer active:scale-95"
+            >
+              <span className="text-sky-400">🔄</span>
+              <span>Legacy Modernization</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleSearch("Startup 0 → 1 MVP")}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-200 bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 hover:border-white/20 transition-all duration-200 backdrop-blur-md cursor-pointer active:scale-95"
+            >
+              <span>🚀</span>
+              <span>Startup 0 → 1 MVP</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleSearch("Enterprise AI Security")}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-200 bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 hover:border-white/20 transition-all duration-200 backdrop-blur-md cursor-pointer active:scale-95"
+            >
+              <span>🛡️</span>
+              <span>Enterprise AI Security</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleSearch("Cloud & DevOps Scale")}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-200 bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 hover:border-white/20 transition-all duration-200 backdrop-blur-md cursor-pointer active:scale-95"
+            >
+              <span>☁️</span>
+              <span>Cloud & DevOps Scale</span>
+            </button>
+          </div>
         </motion.div>
       </div>
 
-      {/* ── Client Logos Clean Transparent Strip (Planted at Exact Bottom Highlighted Area, Enlarged, Slow Left-to-Right Marquee) ── */}
-      <div className="w-full relative z-10 pt-4 pb-6 sm:pb-8 mt-auto">
+      {/* ── Client Logos Clean Transparent Strip (Planted at Exact Bottom Highlighted Area, Enlarged, Glitch-Free Seamless Marquee) ── */}
+      <div className="w-full relative z-10 pt-4 pb-6 sm:pb-8 mt-auto overflow-hidden">
         {/* Soft edge fade masks on sides */}
-        <div className="absolute left-0 inset-y-0 w-28 sm:w-44 bg-gradient-to-r from-[#0b0c0f] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 inset-y-0 w-28 sm:w-44 bg-gradient-to-l from-[#0b0c0f] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 inset-y-0 w-28 sm:w-48 bg-gradient-to-r from-[#0b0c0f] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 inset-y-0 w-28 sm:w-48 bg-gradient-to-l from-[#0b0c0f] to-transparent z-10 pointer-events-none" />
 
-        <div className="w-full overflow-hidden flex items-center">
-          {/* Left-to-right slow marquee track */}
-          <div className="flex items-center gap-16 sm:gap-24 shrink-0 animate-marquee-ltr-slower">
-            {[...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, idx) => (
+        <div className="flex w-max overflow-hidden select-none animate-marquee-glide">
+          {/* Primary Logo Set */}
+          <div className="flex items-center gap-16 sm:gap-24 md:gap-28 shrink-0 pr-16 sm:pr-24 md:pr-28">
+            {CLIENT_LOGOS.map((logo, idx) => (
               <div
-                key={`${logo.name}-${idx}`}
+                key={`track1-${logo.name}-${idx}`}
                 className="flex items-center justify-center shrink-0 opacity-80 hover:opacity-100 transition-opacity duration-300"
               >
                 <Image
@@ -251,7 +297,31 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
                   alt={logo.name}
                   width={logo.width}
                   height={logo.height}
-                  className="max-h-12 sm:max-h-14 md:max-h-16 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+                  className="h-8 sm:h-9 md:h-10 w-auto object-contain"
+                  unoptimized={logo.src.endsWith(".svg")}
+                  priority={idx < 6}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Twin Identical Clone Set (Ensures 100% seamless, zero-fluctuation, zero-glitch infinite glide) */}
+          <div
+            aria-hidden="true"
+            className="flex items-center gap-16 sm:gap-24 md:gap-28 shrink-0 pr-16 sm:pr-24 md:pr-28"
+          >
+            {CLIENT_LOGOS.map((logo, idx) => (
+              <div
+                key={`track2-${logo.name}-${idx}`}
+                className="flex items-center justify-center shrink-0 opacity-80 hover:opacity-100 transition-opacity duration-300"
+              >
+                <Image
+                  src={logo.src}
+                  alt={logo.name}
+                  width={logo.width}
+                  height={logo.height}
+                  className="h-8 sm:h-9 md:h-10 w-auto object-contain"
+                  unoptimized={logo.src.endsWith(".svg")}
                 />
               </div>
             ))}

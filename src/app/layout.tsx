@@ -48,6 +48,15 @@ export const metadata: Metadata = {
     description:
       "We build what's next. AI-powered products, intelligent platforms and scalable engineering for ambitious founders & enterprises.",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png" },
+    ],
+  },
 };
 
 export default function RootLayout({

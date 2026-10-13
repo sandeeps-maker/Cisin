@@ -146,12 +146,22 @@ export function CISAIChatbot({
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showAdvisorCard, setShowAdvisorCard] = useState(true);
+  const [isChatReady, setIsChatReady] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastProcessedQueryRef = useRef<string | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  // 15 seconds delay on initial load before revealing the girl chat window
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsChatReady(true);
+    }, 15000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -215,13 +225,15 @@ export function CISAIChatbot({
 
   return (
     <>
-      {/* 1. Interactive "SPEAK TO A REAL HUMAN" Card Widget in Bottom-Right Corner (Exact match with reference image) */}
-      {!isOpen && showAdvisorCard && (
+      {/* 1. Interactive "SPEAK TO A REAL HUMAN" Card Widget in Bottom-Right Corner (Only appears after 15 seconds) */}
+      {!isOpen && isChatReady && showAdvisorCard && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          initial={{ opacity: 0, scale: 0.9, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="fixed bottom-6 right-6 z-50 w-[190px] sm:w-[210px] h-[280px] sm:h-[300px] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.45)] border border-neutral-800 bg-[#0c0d10] text-white select-none group"
+          exit={{ opacity: 0, scale: 0.9, y: 30 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          onClick={onOpen}
+          className="fixed bottom-6 right-6 z-50 w-[190px] sm:w-[210px] h-[280px] sm:h-[300px] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.45)] border border-neutral-800 bg-[#0c0d10] text-white select-none group cursor-pointer hover:scale-[1.02] transition-transform duration-300"
         >
           {/* Authentic Real Human & AI Sales Advisor Model with Realistic Blinking Eyes */}
           <div className="absolute inset-0 z-0">
@@ -230,7 +242,10 @@ export function CISAIChatbot({
 
           {/* Top-Right Minimize Button */}
           <button
-            onClick={() => setShowAdvisorCard(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowAdvisorCard(false);
+            }}
             className="absolute top-3 right-3 z-20 w-7 h-7 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md transition-all cursor-pointer border border-white/20"
             title="Minimize"
           >
@@ -259,7 +274,10 @@ export function CISAIChatbot({
 
               {/* Orange "Get Started" Pill Button */}
               <button
-                onClick={onOpen}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpen();
+                }}
                 className="flex-1 py-2 px-3 rounded-full bg-[#f15a24] hover:bg-[#ff6834] text-white text-xs font-bold transition-all duration-200 shadow-lg shadow-orange-500/30 active:scale-95 cursor-pointer text-center whitespace-nowrap"
               >
                 Get Started
@@ -269,8 +287,8 @@ export function CISAIChatbot({
         </motion.div>
       )}
 
-      {/* Reopen Launcher when minimized card was closed */}
-      {!isOpen && !showAdvisorCard && (
+      {/* Reopen Launcher when minimized card was closed (also only after 15 seconds) */}
+      {!isOpen && isChatReady && !showAdvisorCard && (
         <motion.button
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}

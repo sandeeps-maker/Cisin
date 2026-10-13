@@ -314,42 +314,51 @@ export function WhiteCaseStudiesSection({
             <div
               key={idx}
               style={{ "--card-accent": item.hexColor } as React.CSSProperties}
-              className="w-[280px] sm:w-[340px] bg-white rounded-3xl p-6 sm:p-7 border border-neutral-200/90 shadow-md hover:shadow-2xl hover:border-[var(--card-accent)]/60 transition-all duration-300 flex flex-col justify-between shrink-0 group/card cursor-pointer"
+              className="relative overflow-hidden w-[280px] sm:w-[340px] bg-white rounded-3xl p-6 sm:p-7 shadow-md hover:shadow-2xl transition-all duration-500 shrink-0 group/card cursor-pointer"
             >
-              <div>
-                {/* Palm/Pastel Translucent Header Box */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-2xl ${item.bgLight} border ${item.borderLight} group-hover/card:scale-110 transition-transform`}>
-                    {item.icon}
+              {/* Full Box Color Fill with smooth fade in / fade out */}
+              <div
+                style={{ backgroundColor: item.hexColor }}
+                className="absolute inset-0 w-full h-full opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none z-0 rounded-3xl"
+              />
+
+              {/* Card Content */}
+              <div className="relative z-10 flex flex-col justify-between h-full">
+                <div>
+                  {/* Palm/Pastel Translucent Header Box */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`p-3 rounded-2xl ${item.bgLight} border ${item.borderLight} group-hover/card:bg-white/20 group-hover/card:border-white/30 group-hover/card:scale-110 group-hover/card:[&_svg]:!text-white transition-all duration-500`}>
+                      {item.icon}
+                    </div>
+                    <span className={`text-[10px] font-mono px-3 py-1 rounded-full ${item.bgLight} ${item.color} border ${item.borderLight} group-hover/card:bg-white/20 group-hover/card:text-white group-hover/card:border-white/30 font-bold transition-all duration-500`}>
+                      {item.tag}
+                    </span>
                   </div>
-                  <span className={`text-[10px] font-mono px-3 py-1 rounded-full ${item.bgLight} ${item.color} border ${item.borderLight} font-bold`}>
-                    {item.tag}
-                  </span>
+
+                  <h3 className="text-lg sm:text-xl font-bold text-neutral-950 group-hover/card:text-white transition-colors duration-500 leading-snug">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-neutral-600 group-hover/card:text-white/90 mt-2.5 leading-relaxed line-clamp-3 font-normal transition-colors duration-500">
+                    {item.description}
+                  </p>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-bold text-neutral-950 group-hover/card:[color:var(--card-accent)] transition-colors duration-300 leading-snug">
-                  {item.title}
-                </h3>
-
-                <p className="text-xs sm:text-sm text-neutral-600 mt-2.5 leading-relaxed line-clamp-3 font-normal">
-                  {item.description}
-                </p>
-              </div>
-
-              {/* Signature Theme Capsule Pill Button */}
-              <div className="mt-6 pt-4 border-t border-neutral-100">
-                <button
-                  onClick={onOpenConsultation}
-                  className="w-full py-2.5 pl-5 pr-2 rounded-full border border-neutral-200 group-hover/card:border-neutral-900 bg-neutral-50 group-hover/card:bg-neutral-950 text-neutral-900 group-hover/card:text-white hover:!bg-[var(--card-accent)] hover:!border-[var(--card-accent)] hover:!text-white font-extrabold text-xs transition-all duration-300 flex items-center justify-between shadow-sm active:scale-95 cursor-pointer group/btn"
-                >
-                  <span className="tracking-tight">Know More</span>
-                  <span
-                    style={{ backgroundColor: item.hexColor }}
-                    className="w-6 h-6 rounded-full text-white flex items-center justify-center transition-transform group-hover/btn:translate-x-0.5 shadow-sm shrink-0"
+                {/* Signature Theme Capsule Pill Button */}
+                <div className="mt-6 pt-4 border-t border-neutral-100 group-hover/card:border-white/20 transition-colors duration-500">
+                  <button
+                    onClick={onOpenConsultation}
+                    className="w-full py-2.5 pl-5 pr-2 rounded-full border border-neutral-200 group-hover/card:border-white/40 bg-neutral-50 group-hover/card:bg-white text-neutral-900 font-extrabold text-xs transition-all duration-500 flex items-center justify-between shadow-sm active:scale-95 cursor-pointer group/btn"
                   >
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </button>
+                    <span className="tracking-tight group-hover/card:text-neutral-950 transition-colors duration-500">Know More</span>
+                    <span
+                      style={{ backgroundColor: item.hexColor }}
+                      className="w-6 h-6 rounded-full text-white flex items-center justify-center transition-transform group-hover/btn:translate-x-0.5 shadow-sm shrink-0"
+                    >
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -357,7 +366,7 @@ export function WhiteCaseStudiesSection({
       </div>
 
       {/* Row 2: Opposite Direction (Right-to-Left Slow Motion Slider, Stops on hover) */}
-      <div className="relative w-full overflow-hidden py-3 mt-4 group">
+      <div className="relative w-full overflow-hidden py-3 mt-6 sm:mt-8 group">
         {/* Left & Right Edge Fade */}
         <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-44 bg-gradient-to-r from-[#f8f9fa] to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-44 bg-gradient-to-l from-[#f8f9fa] to-transparent z-10 pointer-events-none" />
@@ -367,42 +376,51 @@ export function WhiteCaseStudiesSection({
             <div
               key={idx}
               style={{ "--card-accent": item.hexColor } as React.CSSProperties}
-              className="w-[280px] sm:w-[340px] bg-white rounded-3xl p-6 sm:p-7 border border-neutral-200/90 shadow-md hover:shadow-2xl hover:border-[var(--card-accent)]/60 transition-all duration-300 flex flex-col justify-between shrink-0 group/card cursor-pointer"
+              className="relative overflow-hidden w-[280px] sm:w-[340px] bg-white rounded-3xl p-6 sm:p-7 shadow-md hover:shadow-2xl transition-all duration-500 shrink-0 group/card cursor-pointer"
             >
-              <div>
-                {/* Palm/Pastel Translucent Header Box */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-2xl ${item.bgLight} border ${item.borderLight} group-hover/card:scale-110 transition-transform`}>
-                    {item.icon}
+              {/* Full Box Color Fill with smooth fade in / fade out */}
+              <div
+                style={{ backgroundColor: item.hexColor }}
+                className="absolute inset-0 w-full h-full opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 ease-in-out pointer-events-none z-0 rounded-3xl"
+              />
+
+              {/* Card Content */}
+              <div className="relative z-10 flex flex-col justify-between h-full">
+                <div>
+                  {/* Palm/Pastel Translucent Header Box */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`p-3 rounded-2xl ${item.bgLight} border ${item.borderLight} group-hover/card:bg-white/20 group-hover/card:border-white/30 group-hover/card:scale-110 group-hover/card:[&_svg]:!text-white transition-all duration-500`}>
+                      {item.icon}
+                    </div>
+                    <span className={`text-[10px] font-mono px-3 py-1 rounded-full ${item.bgLight} ${item.color} border ${item.borderLight} group-hover/card:bg-white/20 group-hover/card:text-white group-hover/card:border-white/30 font-bold transition-all duration-500`}>
+                      {item.tag}
+                    </span>
                   </div>
-                  <span className={`text-[10px] font-mono px-3 py-1 rounded-full ${item.bgLight} ${item.color} border ${item.borderLight} font-bold`}>
-                    {item.tag}
-                  </span>
+
+                  <h3 className="text-lg sm:text-xl font-bold text-neutral-950 group-hover/card:text-white transition-colors duration-500 leading-snug">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-neutral-600 group-hover/card:text-white/90 mt-2.5 leading-relaxed line-clamp-3 font-normal transition-colors duration-500">
+                    {item.description}
+                  </p>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-bold text-neutral-950 group-hover/card:[color:var(--card-accent)] transition-colors duration-300 leading-snug">
-                  {item.title}
-                </h3>
-
-                <p className="text-xs sm:text-sm text-neutral-600 mt-2.5 leading-relaxed line-clamp-3 font-normal">
-                  {item.description}
-                </p>
-              </div>
-
-              {/* Signature Theme Capsule Pill Button */}
-              <div className="mt-6 pt-4 border-t border-neutral-100">
-                <button
-                  onClick={onOpenConsultation}
-                  className="w-full py-2.5 pl-5 pr-2 rounded-full border border-neutral-200 group-hover/card:border-neutral-900 bg-neutral-50 group-hover/card:bg-neutral-950 text-neutral-900 group-hover/card:text-white hover:!bg-[var(--card-accent)] hover:!border-[var(--card-accent)] hover:!text-white font-extrabold text-xs transition-all duration-300 flex items-center justify-between shadow-sm active:scale-95 cursor-pointer group/btn"
-                >
-                  <span className="tracking-tight">Know More</span>
-                  <span
-                    style={{ backgroundColor: item.hexColor }}
-                    className="w-6 h-6 rounded-full text-white flex items-center justify-center transition-transform group-hover/btn:translate-x-0.5 shadow-sm shrink-0"
+                {/* Signature Theme Capsule Pill Button */}
+                <div className="mt-6 pt-4 border-t border-neutral-100 group-hover/card:border-white/20 transition-colors duration-500">
+                  <button
+                    onClick={onOpenConsultation}
+                    className="w-full py-2.5 pl-5 pr-2 rounded-full border border-neutral-200 group-hover/card:border-white/40 bg-neutral-50 group-hover/card:bg-white text-neutral-900 font-extrabold text-xs transition-all duration-500 flex items-center justify-between shadow-sm active:scale-95 cursor-pointer group/btn"
                   >
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </button>
+                    <span className="tracking-tight group-hover/card:text-neutral-950 transition-colors duration-500">Know More</span>
+                    <span
+                      style={{ backgroundColor: item.hexColor }}
+                      className="w-6 h-6 rounded-full text-white flex items-center justify-center transition-transform group-hover/btn:translate-x-0.5 shadow-sm shrink-0"
+                    >
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}

@@ -23,10 +23,10 @@ export function Navbar({ onOpenConsultation, onToggleMegaMenu }: NavbarProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 ease-in-out pointer-events-auto ${
+      className={`fixed left-0 right-0 z-40 w-full transition-all duration-300 ease-in-out pointer-events-auto ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm py-3 sm:py-3.5 text-neutral-900 border-b border-neutral-100"
-          : "bg-transparent py-4 sm:py-5 text-white"
+          ? "top-0 bg-white/95 backdrop-blur-md shadow-sm py-3 sm:py-3.5 text-neutral-900 border-b border-neutral-100"
+          : "top-7 sm:top-7 bg-transparent py-3 sm:py-4 text-white"
       }`}
     >
       {/* Full-Width Header Container */}
@@ -85,15 +85,21 @@ export function Navbar({ onOpenConsultation, onToggleMegaMenu }: NavbarProps) {
             {/* "Let's Talk" Capsule Pill Button with Circle Arrow */}
             <button
               onClick={() => onOpenConsultation("startup")}
-              className={`group flex items-center gap-3 pl-5 sm:pl-6 pr-2 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-extrabold transition-all shadow-md active:scale-95 cursor-pointer border ${
+              className={`group flex items-center gap-3 pl-5 sm:pl-6 pr-2 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-extrabold transition-all duration-300 shadow-md active:scale-95 cursor-pointer border ${
                 isScrolled
-                  ? "bg-neutral-950 hover:bg-neutral-800 text-white border-neutral-900"
-                  : "bg-white/15 hover:bg-white/25 text-white border-white/25 backdrop-blur-md"
+                  ? "bg-neutral-950 hover:bg-neutral-800 text-white border-neutral-900 shadow-neutral-950/20"
+                  : "bg-white hover:bg-neutral-100 text-neutral-950 border-white shadow-lg"
               }`}
             >
               <span className="tracking-tight whitespace-nowrap">Let&apos;s Talk</span>
-              <span className="w-8 h-8 rounded-full bg-[#f15a24] group-hover:bg-[#ff6a38] text-white flex items-center justify-center transition-transform group-hover:rotate-45 shadow-sm">
-                <ArrowUpRight className="w-4 h-4" />
+              <span
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:rotate-45 shadow-sm ${
+                  isScrolled
+                    ? "bg-[#f15a24] text-white"
+                    : "bg-[#f15a24] text-white"
+                }`}
+              >
+                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
               </span>
             </button>
 

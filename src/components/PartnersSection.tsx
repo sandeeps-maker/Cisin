@@ -2,8 +2,35 @@
 
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { Award, ShieldCheck, Star } from "lucide-react";
-import Image from "next/image";
+import {
+  Brain,
+  Code2,
+  Smartphone,
+  Palette,
+  CheckCircle2,
+  Kanban,
+  Boxes,
+  Cloud,
+  Glasses,
+  Activity,
+  Server,
+  GraduationCap,
+  ShoppingBag,
+  Factory,
+  Landmark,
+  UtensilsCrossed,
+  Car,
+  Trophy,
+  Bot,
+  Globe,
+  ShieldCheck,
+  LineChart,
+  Workflow,
+  Sparkles,
+  Network,
+  GitBranch,
+  Cpu,
+} from "lucide-react";
 
 interface PartnersSectionProps {
   onOpenConsultation?: () => void;
@@ -11,7 +38,10 @@ interface PartnersSectionProps {
 
 interface CardItem {
   name: string;
-  logo: React.ReactNode;
+  icon: React.ReactNode;
+  badgeBg: string;
+  badgeHover: string;
+  iconColor: string;
 }
 
 interface SectionCategory {
@@ -23,286 +53,212 @@ interface SectionCategory {
 
 const CATEGORIES: SectionCategory[] = [
   {
-    id: "clients",
-    title: "Clients",
-    subtitle: "Helping leaders hire smarter",
+    id: "services",
+    title: "Services",
+    subtitle: "End-to-end digital engineering & innovation capabilities",
     cards: [
       {
-        name: "Careem",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-careem.png"
-              alt="Careem"
-              width={260}
-              height={100}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[88%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "AI Services",
+        icon: <Brain className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-purple-50 border-purple-100",
+        badgeHover: "group-hover:bg-purple-600 group-hover:border-purple-600",
+        iconColor: "text-purple-600 group-hover:text-white",
       },
       {
-        name: "amcor",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-amcor.png"
-              alt="amcor"
-              width={260}
-              height={100}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[88%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Software Development",
+        icon: <Code2 className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-blue-50 border-blue-100",
+        badgeHover: "group-hover:bg-blue-600 group-hover:border-blue-600",
+        iconColor: "text-blue-600 group-hover:text-white",
       },
       {
-        name: "BCG",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-bcg.png"
-              alt="BCG"
-              width={240}
-              height={100}
-              className="object-contain max-h-14 sm:max-h-18 max-w-[85%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Application Development",
+        icon: <Smartphone className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-indigo-50 border-indigo-100",
+        badgeHover: "group-hover:bg-indigo-600 group-hover:border-indigo-600",
+        iconColor: "text-indigo-600 group-hover:text-white",
       },
       {
-        name: "NOKIA",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-nokia.png"
-              alt="NOKIA"
-              width={260}
-              height={100}
-              className="object-contain max-h-14 sm:max-h-18 max-w-[88%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Product Design & UX",
+        icon: <Palette className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-pink-50 border-pink-100",
+        badgeHover: "group-hover:bg-pink-600 group-hover:border-pink-600",
+        iconColor: "text-pink-600 group-hover:text-white",
       },
       {
-        name: "ups",
-        logo: (
-          <div className="flex flex-col items-center justify-center text-center py-2">
-            <div className="w-16 h-18 sm:w-20 sm:h-22 bg-[#351c15] rounded-b-2xl rounded-t-md border-2 border-[#ffb500] flex items-center justify-center shadow-lg">
-              <span className="text-xl sm:text-2xl font-black text-[#ffb500] font-sans lowercase tracking-tight">
-                ups
-              </span>
-            </div>
-          </div>
-        ),
+        name: "QA & Testing",
+        icon: <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-emerald-50 border-emerald-100",
+        badgeHover: "group-hover:bg-emerald-600 group-hover:border-emerald-600",
+        iconColor: "text-emerald-600 group-hover:text-white",
       },
       {
-        name: "ebay",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-ebay.png"
-              alt="eBay"
-              width={240}
-              height={100}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[88%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Product Management",
+        icon: <Kanban className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-amber-50 border-amber-100",
+        badgeHover: "group-hover:bg-amber-600 group-hover:border-amber-600",
+        iconColor: "text-amber-600 group-hover:text-white",
       },
       {
-        name: "World Vision",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-worldvision.png"
-              alt="World Vision"
-              width={260}
-              height={100}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[90%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Blockchain & Web3",
+        icon: <Boxes className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-cyan-50 border-cyan-100",
+        badgeHover: "group-hover:bg-cyan-600 group-hover:border-cyan-600",
+        iconColor: "text-cyan-600 group-hover:text-white",
+      },
+      {
+        name: "Modernisation & Cloud",
+        icon: <Cloud className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-sky-50 border-sky-100",
+        badgeHover: "group-hover:bg-sky-600 group-hover:border-sky-600",
+        iconColor: "text-sky-600 group-hover:text-white",
+      },
+      {
+        name: "AR/VR Development",
+        icon: <Glasses className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-violet-50 border-violet-100",
+        badgeHover: "group-hover:bg-violet-600 group-hover:border-violet-600",
+        iconColor: "text-violet-600 group-hover:text-white",
       },
     ],
   },
   {
-    id: "awards",
-    title: "Awards",
-    subtitle: "Recognition for breaking the mold",
+    id: "industry-domains",
+    title: "Industry/Domains",
+    subtitle: "Tailored enterprise solutions across global sectors",
     cards: [
       {
-        name: "GoodFirms",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-goodfirms.png"
-              alt="GoodFirms"
-              width={260}
-              height={100}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[90%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Healthcare & Medical",
+        icon: <Activity className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-rose-50 border-rose-100",
+        badgeHover: "group-hover:bg-rose-600 group-hover:border-rose-600",
+        iconColor: "text-rose-600 group-hover:text-white",
       },
       {
-        name: "WADLINE",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-wadline.png"
-              alt="WADLINE"
-              width={260}
-              height={100}
-              className="object-contain max-h-14 sm:max-h-18 max-w-[90%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "IT & Technology",
+        icon: <Server className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-blue-50 border-blue-100",
+        badgeHover: "group-hover:bg-blue-600 group-hover:border-blue-600",
+        iconColor: "text-blue-600 group-hover:text-white",
       },
       {
-        name: "TopDevelopers",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-topdevelopers.png"
-              alt="TopDevelopers"
-              width={260}
-              height={100}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[90%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Education & E-Learning",
+        icon: <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-amber-50 border-amber-100",
+        badgeHover: "group-hover:bg-amber-600 group-hover:border-amber-600",
+        iconColor: "text-amber-600 group-hover:text-white",
       },
       {
-        name: "DESIGNRUSH",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-designrush.png"
-              alt="DESIGNRUSH"
-              width={260}
-              height={100}
-              className="object-contain max-h-14 sm:max-h-18 max-w-[90%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Retail & E-Commerce",
+        icon: <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-orange-50 border-orange-100",
+        badgeHover: "group-hover:bg-orange-600 group-hover:border-orange-600",
+        iconColor: "text-orange-600 group-hover:text-white",
       },
       {
-        name: "CrunchBase",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-crunchbase.png"
-              alt="CrunchBase"
-              width={260}
-              height={100}
-              className="object-contain max-h-14 sm:max-h-18 max-w-[90%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Manufacturing & Industrial",
+        icon: <Factory className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-slate-100 border-slate-200",
+        badgeHover: "group-hover:bg-slate-800 group-hover:border-slate-800",
+        iconColor: "text-slate-700 group-hover:text-white",
       },
       {
-        name: "Forbes",
-        logo: (
-          <div className="relative w-full h-20 sm:h-24 flex items-center justify-center p-1">
-            <Image
-              src="/logos/logo-forbes.png"
-              alt="Forbes Technology Council"
-              width={260}
-              height={100}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[92%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Banking & Finance",
+        icon: <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-emerald-50 border-emerald-100",
+        badgeHover: "group-hover:bg-emerald-600 group-hover:border-emerald-600",
+        iconColor: "text-emerald-600 group-hover:text-white",
+      },
+      {
+        name: "Food & Beverage",
+        icon: <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-yellow-50 border-yellow-100",
+        badgeHover: "group-hover:bg-yellow-600 group-hover:border-yellow-600",
+        iconColor: "text-yellow-700 group-hover:text-white",
+      },
+      {
+        name: "Automotive & Transportation",
+        icon: <Car className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-cyan-50 border-cyan-100",
+        badgeHover: "group-hover:bg-cyan-600 group-hover:border-cyan-600",
+        iconColor: "text-cyan-600 group-hover:text-white",
+      },
+      {
+        name: "Sports & Fitness",
+        icon: <Trophy className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-violet-50 border-violet-100",
+        badgeHover: "group-hover:bg-violet-600 group-hover:border-violet-600",
+        iconColor: "text-violet-600 group-hover:text-white",
       },
     ],
   },
   {
-    id: "accreditations",
-    title: "Accreditations",
-    subtitle: "Backed by the best",
+    id: "technologies",
+    title: "Technologies",
+    subtitle: "Next-generation stacks & intelligent systems",
     cards: [
       {
-        name: "Microsoft Gold Certified",
-        logo: (
-          <div className="relative w-full h-24 sm:h-28 flex items-center justify-center p-2">
-            <Image
-              src="/accreditations/microsoft-gold.png"
-              alt="Microsoft Gold Certified Partner"
-              width={260}
-              height={120}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[92%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Artificial Intelligence (AI)",
+        icon: <Bot className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-indigo-50 border-indigo-100",
+        badgeHover: "group-hover:bg-indigo-600 group-hover:border-indigo-600",
+        iconColor: "text-indigo-600 group-hover:text-white",
       },
       {
-        name: "CMMI Level 5",
-        logo: (
-          <div className="relative w-full h-24 sm:h-28 flex items-center justify-center p-2">
-            <Image
-              src="/accreditations/cmmi-level-5.png"
-              alt="CMMIDEV/5 and CMMISVC/5 Appraised"
-              width={260}
-              height={120}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[92%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Modern Web Development",
+        icon: <Globe className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-blue-50 border-blue-100",
+        badgeHover: "group-hover:bg-blue-600 group-hover:border-blue-600",
+        iconColor: "text-blue-600 group-hover:text-white",
       },
       {
-        name: "ISO 9001:2015",
-        logo: (
-          <div className="relative w-full h-24 sm:h-28 flex items-center justify-center p-2">
-            <Image
-              src="/accreditations/iso-9001.png"
-              alt="ISO 9001:2015 Certified"
-              width={260}
-              height={120}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[92%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Cybersecurity",
+        icon: <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-red-50 border-red-100",
+        badgeHover: "group-hover:bg-red-600 group-hover:border-red-600",
+        iconColor: "text-red-600 group-hover:text-white",
       },
       {
-        name: "ISO/IEC 27001:2013",
-        logo: (
-          <div className="relative w-full h-24 sm:h-28 flex items-center justify-center p-2">
-            <Image
-              src="/accreditations/iso-27001.png"
-              alt="ISO/IEC 27001:2013 Certified"
-              width={260}
-              height={120}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[92%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Data Science & Analytics",
+        icon: <LineChart className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-violet-50 border-violet-100",
+        badgeHover: "group-hover:bg-violet-600 group-hover:border-violet-600",
+        iconColor: "text-violet-600 group-hover:text-white",
       },
       {
-        name: "Privacy Guaranteed",
-        logo: (
-          <div className="relative w-full h-24 sm:h-28 flex items-center justify-center p-2">
-            <Image
-              src="/accreditations/privacy-guaranteed.png"
-              alt="Privacy Guaranteed"
-              width={260}
-              height={120}
-              className="object-contain max-h-16 sm:max-h-20 max-w-[92%] w-auto h-auto"
-            />
-          </div>
-        ),
+        name: "Robotics & Automation",
+        icon: <Workflow className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-orange-50 border-orange-100",
+        badgeHover: "group-hover:bg-orange-600 group-hover:border-orange-600",
+        iconColor: "text-orange-600 group-hover:text-white",
       },
       {
-        name: "SOC 2 Type II",
-        logo: (
-          <div className="flex flex-col items-center justify-center text-center p-2">
-            <span className="text-2xl sm:text-3xl font-black tracking-tight text-[#0066cc]">
-              SOC 2
-            </span>
-            <span className="text-[11px] font-mono text-neutral-600 mt-1 font-bold">
-              TYPE II AUDITED
-            </span>
-          </div>
-        ),
+        name: "Generative AI",
+        icon: <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-purple-50 border-purple-100",
+        badgeHover: "group-hover:bg-purple-600 group-hover:border-purple-600",
+        iconColor: "text-purple-600 group-hover:text-white",
+      },
+      {
+        name: "Agentic AI",
+        icon: <Network className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-emerald-50 border-emerald-100",
+        badgeHover: "group-hover:bg-emerald-600 group-hover:border-emerald-600",
+        iconColor: "text-emerald-600 group-hover:text-white",
+      },
+      {
+        name: "DevOps & Platform Engineering",
+        icon: <GitBranch className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-cyan-50 border-cyan-100",
+        badgeHover: "group-hover:bg-cyan-600 group-hover:border-cyan-600",
+        iconColor: "text-cyan-600 group-hover:text-white",
+      },
+      {
+        name: "AI-Powered Robotics",
+        icon: <Cpu className="w-5 h-5 sm:w-6 sm:h-6" />,
+        badgeBg: "bg-amber-50 border-amber-100",
+        badgeHover: "group-hover:bg-amber-600 group-hover:border-amber-600",
+        iconColor: "text-amber-600 group-hover:text-white",
       },
     ],
   },
@@ -344,25 +300,25 @@ export function PartnersSection({ onOpenConsultation }: PartnersSectionProps) {
   return (
     <section
       ref={containerRef}
-      id="partners-recognition"
-      className="relative h-[280vh] bg-[#0c0d10] text-white select-none"
+      id="services-domains-technologies"
+      className="relative h-[270vh] bg-white text-slate-900 select-none border-t border-slate-200/80"
     >
       {/* Sticky Full-Viewport Stage */}
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        {/* Subtle Ambient Background Lighting */}
+        {/* Subtle Ambient Background Lighting for clean white theme */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-          <div className="absolute top-1/3 left-1/4 w-[550px] h-[380px] bg-[#9333ea]/10 blur-[180px] rounded-full" />
-          <div className="absolute bottom-1/3 right-1/4 w-[550px] h-[380px] bg-[#f15a24]/10 blur-[180px] rounded-full" />
+          <div className="absolute top-1/4 left-1/4 w-[600px] h-[450px] bg-blue-100/40 blur-[150px] rounded-full" />
+          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[450px] bg-orange-100/35 blur-[150px] rounded-full" />
         </div>
 
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Left Column: 3 Clean Minimalist Text Lines (Clients, Awards, Accreditations) */}
-            <div className="lg:col-span-5 relative pl-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            {/* Left Column: 3 Clean Minimalist Text Lines (Services, Industry/Domains, Technologies) */}
+            <div className="lg:col-span-5 relative pl-6 sm:pl-8">
               {/* Vertical Animated Accent Indicator Line */}
-              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/10 rounded-full">
+              <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-slate-200 rounded-full overflow-hidden">
                 <motion.div
-                  className="w-full bg-gradient-to-b from-[#a855f7] via-[#f15a24] to-[#00e5ff] rounded-full shadow-sm shadow-[#a855f7]"
+                  className="w-full bg-gradient-to-b from-[#0066cc] via-[#f15a24] to-[#00c5e6] rounded-full shadow-sm"
                   animate={{
                     top: `${(activeIdx / 3) * 100}%`,
                     height: "33.33%",
@@ -382,10 +338,10 @@ export function PartnersSection({ onOpenConsultation }: PartnersSectionProps) {
                       className="cursor-pointer group transition-all duration-300"
                     >
                       <h2
-                        className={`text-3xl sm:text-5xl font-normal tracking-[-0.035em] transition-all duration-300 ${
+                        className={`text-3xl sm:text-5xl font-semibold tracking-[-0.035em] transition-all duration-300 ${
                           isActive
-                            ? "text-white scale-[1.02] origin-left"
-                            : "text-neutral-600 group-hover:text-neutral-400"
+                            ? "text-slate-900 scale-[1.02] origin-left"
+                            : "text-slate-400 group-hover:text-slate-600"
                         }`}
                       >
                         {cat.title}
@@ -393,8 +349,8 @@ export function PartnersSection({ onOpenConsultation }: PartnersSectionProps) {
                       <p
                         className={`text-sm sm:text-base mt-2 font-normal transition-colors duration-300 ${
                           isActive
-                            ? "text-slate-200"
-                            : "text-neutral-700 group-hover:text-neutral-500"
+                            ? "text-slate-600 font-medium"
+                            : "text-slate-400 group-hover:text-slate-500"
                         }`}
                       >
                         {cat.subtitle}
@@ -405,31 +361,42 @@ export function PartnersSection({ onOpenConsultation }: PartnersSectionProps) {
               </div>
             </div>
 
-            {/* Right Column: Sliding / Floating Pure White Squircle Logo Cards */}
+            {/* Right Column: Sliding / Floating Pure White Squircle Cards with Icons and Text */}
             <div className="lg:col-span-7 flex justify-center lg:justify-end">
               <div className="w-full max-w-2xl">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeCategory.id}
-                    initial={{ opacity: 0, y: 40, scale: 0.94 }}
+                    initial={{ opacity: 0, y: 30, scale: 0.96 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -40, scale: 0.94 }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6"
+                    exit={{ opacity: 0, y: -30, scale: 0.96 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4.5"
                   >
                     {activeCategory.cards.map((card, cIdx) => (
                       <motion.div
-                        key={cIdx}
+                        key={card.name}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{
                           duration: 0.35,
-                          delay: cIdx * 0.04,
+                          delay: cIdx * 0.03,
                           ease: "easeOut",
                         }}
-                        className="aspect-square rounded-3xl p-3 sm:p-4 flex flex-col items-center justify-center shadow-lg border border-neutral-200/90 bg-white hover:bg-white hover:shadow-2xl hover:border-neutral-300 transition-all duration-300 hover:scale-105 cursor-pointer text-neutral-900 overflow-hidden"
+                        onClick={() => onOpenConsultation?.()}
+                        className="aspect-[1.05/1] sm:aspect-square rounded-3xl p-3 sm:p-4.5 flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(15,23,42,0.04)] border border-slate-200/90 bg-white hover:bg-white hover:shadow-[0_16px_36px_rgba(15,23,42,0.09)] hover:border-slate-300 transition-all duration-300 hover:scale-[1.04] cursor-pointer text-slate-900 group"
                       >
-                        {card.logo}
+                        {/* Interactive Themed Icon Badge */}
+                        <div
+                          className={`w-11 h-11 sm:w-13 sm:h-13 rounded-2xl flex items-center justify-center mb-2.5 sm:mb-3 transition-all duration-300 group-hover:scale-110 shadow-sm border ${card.badgeBg} ${card.badgeHover} ${card.iconColor}`}
+                        >
+                          {card.icon}
+                        </div>
+
+                        {/* Title Text */}
+                        <span className="text-xs sm:text-[13px] md:text-sm font-semibold text-slate-800 group-hover:text-slate-950 transition-colors leading-snug px-1">
+                          {card.name}
+                        </span>
                       </motion.div>
                     ))}
                   </motion.div>

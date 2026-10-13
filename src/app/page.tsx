@@ -3,19 +3,21 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
+import { FraudAlertBanner } from "@/components/FraudAlertBanner";
+import { FloatingStoryVideoWidget } from "@/components/FloatingStoryVideoWidget";
 import { Hero } from "@/components/Hero";
 import { StylistCredibilitySection } from "@/components/StylistCredibilitySection";
 import { PartnersSection } from "@/components/PartnersSection";
-import { WhiteServicesSection } from "@/components/WhiteServicesSection";
+import { FAQSection } from "@/components/FAQSection";
 import { ClientTestimonialsSection } from "@/components/ClientTestimonialsSection";
 import { StartupJourney } from "@/components/StartupJourney";
 import { WhiteCaseStudiesSection } from "@/components/WhiteCaseStudiesSection";
 import { EnterpriseSection } from "@/components/EnterpriseSection";
-import { TransformCTASection } from "@/components/TransformCTASection";
 import { OrbitFooter } from "@/components/OrbitFooter";
 import { ConsultationModal } from "@/components/ConsultationModal";
 import { DirectoryMegaMenu } from "@/components/DirectoryMegaMenu";
 import { CISAIChatbot } from "@/components/CISAIChatbot";
+import { BackToTopButton } from "@/components/BackToTopButton";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,6 +38,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#0c0d10] text-slate-100 relative selection:bg-[#f15a24] selection:text-white">
+      {/* 00 Animated Fraud Alert Strip at the Very Top of the Website */}
+      <FraudAlertBanner />
+
       {/* 01 Full-Width Top Header Bar + Clean Navbar with Mega Menu Toggle */}
       <Navbar
         onOpenConsultation={handleOpenConsultation}
@@ -51,17 +56,14 @@ export default function Home() {
       {/* 03 Second Slide: Stylist Credibility & Verified Scale Metrics */}
       <StylistCredibilitySection />
 
-      {/* 04 Global Strategic Partners & Cloud Alliances */}
+      {/* 04 Services, Industry/Domains & Technologies */}
       <PartnersSection onOpenConsultation={() => handleOpenConsultation("general")} />
 
-      {/* 06 Middle White Section 1: Innovation Practices & Services */}
-      <WhiteServicesSection onOpenConsultation={() => handleOpenConsultation("general")} />
-
-      {/* 07 Client Video Testimonials ("Secure, Streamline, and Succeed with Confidence") */}
-      <ClientTestimonialsSection onOpenConsultation={() => handleOpenConsultation("general")} />
-
-      {/* 08 Industry Verticals & Global Client Case Studies ("You bring the vision. We bring the technology.") */}
+      {/* 05 Global Client Case Studies ("Innovation, Engineered by CIS") */}
       <StartupJourney onOpenConsultation={() => handleOpenConsultation("startup")} />
+
+      {/* 06 Client Video Testimonials ("Secure, Streamline, and Succeed with Confidence") */}
+      <ClientTestimonialsSection onOpenConsultation={() => handleOpenConsultation("general")} />
 
       {/* 08 Middle White Section 2: Custom Software Development Services Slider */}
       <WhiteCaseStudiesSection onOpenConsultation={() => handleOpenConsultation("general")} />
@@ -69,8 +71,8 @@ export default function Home() {
       {/* 09 Enterprise Complexity & CMMI Level 5 Scale (Dark) */}
       <EnterpriseSection onOpenConsultation={() => handleOpenConsultation("enterprise")} />
 
-      {/* 10 Transform IT Infrastructure Call-to-Action Section */}
-      <TransformCTASection onOpenConsultation={() => handleOpenConsultation("general")} />
+      {/* 10 Side-by-Side Contact Form & Accordion FAQ Section */}
+      <FAQSection onOpenConsultation={() => handleOpenConsultation("general")} />
 
       {/* 11 Tenity-Style Orbit Footer (Image 3: "Stay in our orbit" + Newsletter + Hubs) */}
       <OrbitFooter onOpenConsultation={handleOpenConsultation} />
@@ -124,6 +126,12 @@ export default function Home() {
         initialQuery={chatInitialQuery}
         onOpenConsultation={handleOpenConsultation}
       />
+
+      {/* Floating Story Video Widget (Appears after 10s with Cancel/Remove Button) */}
+      <FloatingStoryVideoWidget />
+
+      {/* Floating Back to Top Arrow Button on the Right Side */}
+      <BackToTopButton />
     </main>
   );
 }

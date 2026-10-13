@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, X, ExternalLink, Video } from "lucide-react";
+import { Play, X, ExternalLink, Video, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 export interface VideoItem {
@@ -77,31 +77,61 @@ interface EnterpriseSectionProps {
 }
 
 export function EnterpriseSection({ onOpenConsultation }: EnterpriseSectionProps) {
-  // Default to index 2 (CIS Spark 2019) so one card is active from the very first view
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(2);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [cardsPerView, setCardsPerView] = useState(3);
+  const touchStartXRef = useRef<number | null>(null);
 
-  // Mouse move handler for Quoti-style fanned interactive response
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, mouseX / rect.width));
-    const cardIdx = Math.min(VIDEOS.length - 1, Math.floor(percentage * VIDEOS.length));
-    setHoveredIdx(cardIdx);
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      if (window.innerWidth < 640) {
+        setCardsPerView(1);
+      } else if (window.innerWidth < 1024) {
+        setCardsPerView(2);
+      } else if (window.innerWidth < 1360) {
+        setCardsPerView(3);
+      } else {
+        setCardsPerView(4);
+      }
+    };
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
+
+  const maxIndex = Math.max(0, VIDEOS.length - cardsPerView);
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
   };
 
-  const handleMouseLeave = () => {
-    // Keep the prominent center card active when not hovering
-    setHoveredIdx(2);
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartXRef.current;
+    if (diff > 50) {
+      handlePrev();
+    } else if (diff < -50) {
+      handleNext();
+    }
+    touchStartXRef.current = null;
   };
 
   return (
     <section
-      id="enterprise"
+      id="culture-highlights"
       className="relative py-20 sm:py-28 bg-[#080b12] text-white overflow-hidden border-t border-white/10 select-none"
     >
+      {/* Anchor for backward-compatible #enterprise links */}
+      <div id="enterprise" className="absolute -top-24 pointer-events-none" />
+
       {/* Animated Floating Orange Ambient Glow Circles */}
       <motion.div
         animate={{
@@ -132,144 +162,113 @@ export function EnterpriseSection({ onOpenConsultation }: EnterpriseSectionProps
         className="absolute bottom-1/4 right-1/4 w-[550px] h-[400px] bg-gradient-to-bl from-[#f97316]/18 via-[#f15a24]/14 to-transparent blur-[160px] rounded-full pointer-events-none"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Clean Section Header (culture Highlights & We Believe in Work hard, Party harder!) */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-0.035em] capitalize font-sans"
-          >
-            Culture Highlights
-          </motion.h2>
+      <div className="w-full max-w-[1850px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
+        {/* Clean Header: Title on Left, Arrow Buttons on Right */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#f15a24]/15 text-[#f15a24] border border-[#f15a24]/30 mb-3 uppercase tracking-wider">
+              Life at CIS
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-normal text-white tracking-[-0.035em] capitalize font-sans">
+              Culture Highlights
+            </h2>
+            <p className="text-base sm:text-lg text-slate-300 font-normal mt-2 font-sans">
+              We Believe in Work hard, Party harder!
+            </p>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.08 }}
-            className="text-base sm:text-lg text-slate-300 font-normal mt-3 font-sans"
-          >
-            We Believe in Work hard, Party harder!
-          </motion.p>
+          {/* Clean Arrow Controls */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="w-12 h-12 rounded-full bg-white/10 hover:bg-[#f15a24] text-white border border-white/15 hover:border-transparent flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 cursor-pointer"
+              aria-label="Previous video"
+              title="Previous video"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="w-12 h-12 rounded-full bg-white/10 hover:bg-[#f15a24] text-white border border-white/15 hover:border-transparent flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 cursor-pointer"
+              aria-label="Next video"
+              title="Next video"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
         </div>
 
-        {/* Quoti-Style Interactive Fanned Cards Experience */}
-        <div className="py-6 relative">
-          <div
-            ref={containerRef}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            className="relative min-h-[480px] sm:min-h-[540px] flex items-center justify-center cursor-pointer"
+        {/* Clean, Simple Horizontal Slider Track */}
+        <div
+          className="relative overflow-hidden"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <motion.div
+            animate={{
+              x: `-${currentIndex * (100 / cardsPerView)}%`,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 280,
+              damping: 30,
+            }}
+            className="flex"
           >
-            <div className="relative w-full max-w-5xl h-[420px] sm:h-[460px] flex items-center justify-center">
-              {VIDEOS.map((video, idx) => {
-                const centerIdx = 2.5; // virtual center of 6 items (between 2 and 3)
-                const distFromCenter = idx - centerIdx;
-                const isHovered = hoveredIdx === idx;
-                const isAnyHovered = hoveredIdx !== null;
-
-                // Dynamic resting arc calculations matching getquoti.ai
-                let rotate = distFromCenter * 5.5; // -13.75 to +13.75 deg
-                let translateY = Math.abs(distFromCenter) * 16; // arc curve drop
-                let translateX = distFromCenter * 140; // horizontal fanning
-                let scale = 0.96;
-                let zIndex = Math.round(10 - Math.abs(distFromCenter) * 2);
-
-                // Quoti-style active hover response
-                if (isHovered) {
-                  rotate = 0;
-                  translateY = -28;
-                  scale = 1.08;
-                  zIndex = 40;
-                } else if (isAnyHovered) {
-                  const relativeDist = idx - (hoveredIdx ?? 0);
-                  const pushFactor = relativeDist < 0 ? -1 : 1;
-                  translateX += pushFactor * 35;
-                  scale = 0.92;
-                  translateY += 10;
-                }
-
-                return (
-                  <motion.div
-                    key={video.id}
-                    animate={{
-                      x: translateX,
-                      y: translateY,
-                      rotate: rotate,
-                      scale: scale,
-                      zIndex: zIndex,
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 24,
-                      mass: 0.8,
-                    }}
-                    onClick={() => setSelectedVideo(video)}
-                    className="absolute w-[280px] sm:w-[320px] bg-white rounded-3xl overflow-hidden shadow-2xl border border-neutral-200/90 text-neutral-900 group cursor-pointer transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(241,90,36,0.3)]"
-                    style={{ transformOrigin: "center bottom" }}
-                  >
-                    {/* Video Thumbnail with YouTube Overlay */}
-                    <div className="relative w-full aspect-[16/10] bg-neutral-900 overflow-hidden">
-                      <Image
-                        src={video.thumbnail}
-                        alt={video.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      {/* Dark Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
-
-                      {/* Top Channel Badge */}
-                      <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/20">
-                          {video.tag}
-                        </span>
-                      </div>
-
-                      {/* YouTube Center Play Button */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <motion.div
-                          whileHover={{ scale: 1.15 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="w-14 h-10 sm:w-16 sm:h-11 bg-[#ff0000] rounded-2xl flex items-center justify-center shadow-2xl shadow-red-600/50 group-hover:bg-[#cc0000] transition-colors"
-                        >
-                          <Play className="w-6 h-6 text-white fill-white ml-0.5" />
-                        </motion.div>
-                      </div>
+            {VIDEOS.map((video) => (
+              <div
+                key={video.id}
+                className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 shrink-0 px-2.5 sm:px-3"
+              >
+                <div
+                  onClick={() => setSelectedVideo(video)}
+                  className="bg-white rounded-3xl overflow-hidden shadow-xl border border-neutral-200/90 text-neutral-900 group cursor-pointer hover:shadow-2xl hover:border-[#f15a24]/40 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col"
+                >
+                  {/* Thumbnail */}
+                  <div className="relative w-full aspect-[16/10] bg-neutral-900 overflow-hidden">
+                    <Image
+                      src={video.thumbnail}
+                      alt={video.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {/* Top Tag Badge */}
+                    <div className="absolute top-3 left-3 pointer-events-none">
+                      <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-white border border-white/20">
+                        {video.tag}
+                      </span>
                     </div>
 
-                    {/* Card Content Footer */}
-                    <div className="p-5 sm:p-6 bg-white flex flex-col justify-between min-h-[140px]">
-                      <div>
-                        <h3 className="text-lg sm:text-xl font-black text-neutral-950 font-sans tracking-tight leading-snug group-hover:text-[#f15a24] transition-colors">
-                          {video.title}
-                        </h3>
-                        <p className="text-xs text-neutral-600 font-normal leading-relaxed mt-1.5 line-clamp-2">
-                          {video.subtitle}
-                        </p>
-                      </div>
-
-                      <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between text-[11px] font-mono text-neutral-500">
-                        <span className="text-[#f15a24] font-bold">Watch on YouTube</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#f15a24] transition-colors" />
+                    {/* Red YouTube Center Play Button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-14 h-10 bg-[#ff0000] group-hover:bg-[#cc0000] rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all duration-300">
+                        <Play className="w-6 h-6 text-white fill-white ml-0.5" />
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
+                  </div>
 
-          {/* Interactive Deck Pill Indicator */}
-          <div className="text-center mt-6">
-            <span className="inline-flex items-center gap-2 text-xs font-mono text-neutral-400 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
-              <span className="w-2 h-2 rounded-full bg-[#f15a24] animate-pulse" />
-              Hover across the deck to fan out videos • Click any card to watch
-            </span>
-          </div>
+                  {/* Body Content */}
+                  <div className="p-6 flex flex-col justify-between flex-1">
+                    <div>
+                      <h3 className="text-xl font-bold text-neutral-950 font-sans tracking-tight group-hover:text-[#f15a24] transition-colors">
+                        {video.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed mt-2 line-clamp-2">
+                        {video.subtitle}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs font-mono">
+                      <span className="text-[#f15a24] font-bold">Watch on YouTube</span>
+                      <ExternalLink className="w-4 h-4 text-neutral-400 group-hover:text-[#f15a24] transition-colors" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
 

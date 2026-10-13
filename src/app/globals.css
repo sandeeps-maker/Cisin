@@ -162,6 +162,16 @@
   }
 }
 
+/* Perfect Dual-Track Infinite Continuous Loop (Moves exactly -100% with no resets or jumps) */
+@keyframes marquee-continuous {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 /* Infinite Smooth Left-to-Right Marquee */
 @keyframes marquee-ltr {
   0% {
@@ -173,7 +183,7 @@
 }
 
 .animate-marquee-slow {
-  animation: marquee 50s linear infinite;
+  animation: marquee 95s linear infinite;
   will-change: transform;
 }
 
@@ -182,7 +192,7 @@
 }
 
 .animate-marquee-slower {
-  animation: marquee 65s linear infinite;
+  animation: marquee-continuous 90s linear infinite;
   will-change: transform;
 }
 
@@ -191,7 +201,7 @@
 }
 
 .animate-marquee-ltr-slow {
-  animation: marquee-ltr 50s linear infinite;
+  animation: marquee-ltr 95s linear infinite;
   will-change: transform;
 }
 
@@ -205,6 +215,25 @@
 }
 
 .animate-marquee-ltr-slower:hover {
+  animation-play-state: paused;
+}
+
+/* Zero-fluctuation 50% seamless smooth marquee glide */
+@keyframes marquee-glide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-glide {
+  animation: marquee-glide 80s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-glide:hover {
   animation-play-state: paused;
 }
 

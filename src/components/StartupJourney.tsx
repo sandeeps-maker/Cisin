@@ -14,7 +14,7 @@ import {
   ChevronRight,
   ArrowUpRight,
 } from "lucide-react";
-import { TenityRibbedBackground } from "./TenityRibbedBackground";
+import { CinematicAtmosphereBackground } from "./CinematicAtmosphereBackground";
 
 interface StartupJourneyProps {
   onOpenConsultation: () => void;
@@ -249,8 +249,11 @@ export function StartupJourney({ onOpenConsultation }: StartupJourneyProps) {
     >
       {/* Pinned Sticky Viewport Container */}
       <div className="sticky top-0 min-h-screen w-full flex flex-col justify-center overflow-hidden py-10 lg:py-6">
+        {/* Cinematic Low-Contrast Atmospheric Background with cursor-reactive color shifting */}
+        <CinematicAtmosphereBackground side="center" opacity={0.75} />
+
         {/* Dark Architectural Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#040814] via-[#070d1e] to-[#040814] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#040814]/70 via-[#070d1e]/50 to-[#040814]/70 pointer-events-none" />
 
         {/* Atmospheric Top & Bottom Blend Overlays */}
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#040814] to-transparent pointer-events-none z-[1]" />

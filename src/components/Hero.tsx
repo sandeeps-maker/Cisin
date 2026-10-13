@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Sparkles, Send, X, PenLine } from "lucide-react";
-import { TenityRibbedBackground } from "./TenityRibbedBackground";
+import { CinematicAtmosphereBackground } from "./CinematicAtmosphereBackground";
 
 interface HeroProps {
   onOpenConsultation: (track?: "startup" | "enterprise") => void;
@@ -117,8 +117,8 @@ export function Hero({ onOpenConsultation, onOpenChatWithQuery }: HeroProps) {
 
   return (
     <section className="relative min-h-screen w-full flex flex-col justify-between items-center pt-28 sm:pt-32 pb-0 overflow-hidden bg-[#0b0c0f] text-white select-none">
-      {/* Exact Graphic Image with Cursor Movement Animation */}
-      <TenityRibbedBackground side="right" opacity={1.0} imageSrc="/tenity-ribbed-bg.png" />
+      {/* Uploaded Ribbed Graphic Background with Parallax Movement & Low-Contrast Color Glow */}
+      <CinematicAtmosphereBackground side="right" themeColor="hero" imageSrc="/cis-hero-slats-bg.png" opacity={1.0} />
 
       {/* Subtle Edge Gradient for smooth section transition */}
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0c0d10] to-transparent pointer-events-none z-[2]" />

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Plus, Check, ArrowUpRight, ChevronRight, Sparkles, Building2 } from "lucide-react";
-import { TenityRibbedBackground } from "./TenityRibbedBackground";
+import { CinematicAtmosphereBackground } from "./CinematicAtmosphereBackground";
 
 interface OrbitFooterProps {
   onOpenConsultation: (track?: "startup" | "enterprise") => void;
@@ -23,8 +23,8 @@ export function OrbitFooter({ onOpenConsultation }: OrbitFooterProps) {
 
   return (
     <footer className="relative bg-[#0c0d10] text-white pt-24 sm:pt-32 pb-16 overflow-hidden select-none">
-      {/* Exact Graphic Image with Cursor Movement Animation */}
-      <TenityRibbedBackground side="left" opacity={0.9} imageSrc="/tenity-ribbed-bg.png" />
+      {/* Uploaded Ribbed Graphic Background with Dark Brown Theme & Cursor Movement */}
+      <CinematicAtmosphereBackground side="left" themeColor="footer" imageSrc="/cis-hero-slats-bg.png" opacity={0.88} />
 
       {/* Atmospheric Top Blend Overlay */}
       <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#0c0d10] to-transparent pointer-events-none z-[1]" />
